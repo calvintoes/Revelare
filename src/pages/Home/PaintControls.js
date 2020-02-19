@@ -17,8 +17,21 @@ const PaintControls = (props) => {
 
   const useStyles = makeStyles(theme => ({
     root: {
-      padding: '20px 50px'
+      padding: '35px 20px',
+      maxWidth: '200px',
     },
+    addBtn: {
+      margin: '10px 0',
+      maxWidth: '200px'
+    },
+    subBtn: {
+      margin: '10px 0',
+      maxWidth: '100px'
+    },
+    slider: {
+      margin: '10px 0'
+    }
+    
   }));
   
 
@@ -49,8 +62,8 @@ const PaintControls = (props) => {
         
   const classes = useStyles();
   return ( 
-    <div className={classes.root}>
-      <Paper>
+    <>
+      <Paper className={classes.root}>
         <Container>
           <Button
             id="addBtn"
@@ -58,6 +71,7 @@ const PaintControls = (props) => {
             onClick={() => handleBtns()}
             value={add}
             disableElevation={add}
+            className={classes.addBtn}
           >
            Add 
           </Button>
@@ -67,6 +81,7 @@ const PaintControls = (props) => {
             onClick={() => handleBtns()}
             value={subtract}
             disableElevation={subtract}
+            className={classes.subBtn}
           >
            Subtract 
           </Button>
@@ -76,10 +91,11 @@ const PaintControls = (props) => {
           <Slider
             value={size}
             onChange={handleBrush}
+            className={classes.slider}
           />
         </Container>
       </Paper>
-    </div>
+    </>
    );
 }
  

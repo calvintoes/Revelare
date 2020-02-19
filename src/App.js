@@ -1,11 +1,11 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import PaintControls from './pages/Home/PaintControls'
+import HomeContainer from './pages/HomeContainer'
 
 function App() {
   return (
-    <PaintControls />
+    <HomeContainer />
   );
 }
 
