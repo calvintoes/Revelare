@@ -8,7 +8,13 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const NavBar = (props) => {
 
-  const [resetBtn, setResetBtn] = useState();
+  const [resetBtn, setResetBtn] = useState(false);
+
+
+  const handleReset = () => {
+    setResetBtn(true);
+    console.log("Reset Btn Pressed")
+  }
 
   const useStyles = makeStyles(theme => ({
     root: {
@@ -42,6 +48,7 @@ const NavBar = (props) => {
         id="resetBtn"
         variant="outlined"  
         className={classes.resetBtn}
+        onClick={handleReset}
       >
         Reset
       </Button>
