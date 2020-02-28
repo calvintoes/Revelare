@@ -13,16 +13,21 @@ const PaintControls = (props) => {
   const [add, setAddBtn] = useState(true)
   const [subtract, setSubtractBtn] = useState(false) 
   const [size, setBrushSize] = useState(5)
-  // const [brushStroke, setbrushStroke] = useState('solid')
 
   const useStyles = makeStyles(theme => ({
     root: {
-      padding: '35px 20px',
       maxWidth: '200px',
+      textAlign: 'center'
+    },
+    card: {
+      padding: '35px 10px',
     },
     addBtn: {
       margin: '10px 0',
-      maxWidth: '200px'
+      maxWidth: '200px',
+      padding: '5px 30px',
+      backgroundColor: add ? '#5D5D5F' : 'null',
+      color: add ? 'white' : 'null'
     },
     subBtn: {
       margin: '10px 0',
@@ -30,12 +35,16 @@ const PaintControls = (props) => {
     },
     slider: {
       margin: '10px 0'
-    }
+    },
+    title: {
+      margin: '10px 0',
+      color: '#5C6C59',
+      textAlign: 'center',
+      borderBottom: '2px solid'
+    },
     
   }));
   
-
-
   const handleBtns = (e) => {
     if (!add) {
       setAddBtn(true);
@@ -52,6 +61,7 @@ const PaintControls = (props) => {
       setAddBtn(true);
       setSubtractBtn(false);
     }
+
     console.log("add: ", add);
     console.log("subtract: ", subtract)
   }
@@ -62,8 +72,15 @@ const PaintControls = (props) => {
         
   const classes = useStyles();
   return ( 
-    <>
-      <Paper className={classes.root}>
+    <div className={classes.root}>
+      <Typography
+        variant="h6"
+        className={classes.title}
+        >
+          Paint Controls
+      </Typography>
+
+      <Paper className={classes.card}>
         <Container>
           <Button
             id="addBtn"
@@ -95,7 +112,7 @@ const PaintControls = (props) => {
           />
         </Container>
       </Paper>
-    </>
+    </div>
    );
 }
  

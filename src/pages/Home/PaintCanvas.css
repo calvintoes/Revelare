@@ -1,0 +1,15 @@
+.canvas-wrapper {
+  margin: 40px 0;
+  border: solid 1px black;
+}
+
+#main-canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  background-image: url('../../assets/BW-field.jpg');
+  margin: 0 auto;
+  background-size: cover;
+  cursor: crosshair;
+
+}
