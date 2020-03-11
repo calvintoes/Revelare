@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Button,
   Container,
@@ -7,12 +7,14 @@ import {
   Typography
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { AppContext } from '../HomeContainer'
 
 const PaintControls = (props) => {
 
-  const [add, setAddBtn] = useState(true)
-  const [subtract, setSubtractBtn] = useState(false) 
-  const [size, setBrushSize] = useState(5)
+  const [add, setAddBtn] = useState(true);
+  const [subtract, setSubtractBtn] = useState(false); 
+  const [size, setBrushSize] = useState(5);
+  const {state, dispatch} = useContext(AppContext);
 
   const useStyles = makeStyles(theme => ({
     root: {
@@ -53,6 +55,7 @@ const PaintControls = (props) => {
       setAddBtn(false);
       setSubtractBtn(true);
     }
+    dispatch({ type: 'ADD_BTN_PRESSED', data: add });
 
     if (!subtract) {
       setAddBtn(false);
@@ -61,10 +64,12 @@ const PaintControls = (props) => {
       setAddBtn(true);
       setSubtractBtn(false);
     }
+    dispatch({ type: 'SUBTRACT_BTN_PRESSED', data: subtract })
 
     console.log("add: ", add);
     console.log("subtract: ", subtract)
   }
+
 
   const handleBrush = (e, newValue) => {
     setBrushSize(newValue);
@@ -86,7 +91,7 @@ const PaintControls = (props) => {
             id="addBtn"
             variant="contained"
             onClick={() => handleBtns()}
-            value={add}
+            value={state.addBtn}
             disableElevation={add}
             className={classes.addBtn}
           >
@@ -96,7 +101,7 @@ const PaintControls = (props) => {
             id="subtractBtn"
             variant="contained"
             onClick={() => handleBtns()}
-            value={subtract}
+            value={state.subtractBtn}
             disableElevation={subtract}
             className={classes.subBtn}
           >
