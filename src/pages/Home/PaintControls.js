@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import {
   Button,
-  Container,
   Slider,
   Paper,
   Typography
@@ -18,25 +17,28 @@ const PaintControls = (props) => {
 
   const useStyles = makeStyles(theme => ({
     root: {
-      maxWidth: '200px',
+      maxWidth: '150px',
       textAlign: 'center'
     },
     card: {
-      padding: '35px 10px',
+      padding: '30px 10px',
     },
     addBtn: {
       margin: '10px 0',
       maxWidth: '200px',
-      padding: '5px 30px',
+      padding: '8px 35px',
       backgroundColor: add ? '#5D5D5F' : 'null',
       color: add ? 'white' : 'null'
     },
     subBtn: {
-      margin: '10px 0',
-      maxWidth: '100px'
+      margin: '12px 0',
+      maxWidth: '100px',
+      backgroundColor: subtract ? '#5D5D5F' : 'null',
     },
     slider: {
-      margin: '10px 0'
+      margin: '10px 0',
+      paddingTop: 0,
+      width: '100px'
     },
     title: {
       margin: '10px 0',
@@ -47,27 +49,24 @@ const PaintControls = (props) => {
     
   }));
   
-  const handleBtns = (e) => {
+  const handleAddBtn = (e) => {
     if (!add) {
       setAddBtn(true);
       setSubtractBtn(false);
-    } else {
-      setAddBtn(false);
-      setSubtractBtn(true);
     }
+    setAddBtn(true);
+    setSubtractBtn(false);
     dispatch({ type: 'ADD_BTN_PRESSED', data: add });
+  }
 
+  const handleSubtractBtn = (e) => {
     if (!subtract) {
       setAddBtn(false);
       setSubtractBtn(true);
-    } else {
-      setAddBtn(true);
-      setSubtractBtn(false);
     }
+    setAddBtn(false);
+    setSubtractBtn(true);
     dispatch({ type: 'SUBTRACT_BTN_PRESSED', data: subtract })
-
-    console.log("add: ", add);
-    console.log("subtract: ", subtract)
   }
 
 
@@ -86,11 +85,10 @@ const PaintControls = (props) => {
       </Typography>
 
       <Paper className={classes.card}>
-        <Container>
           <Button
             id="addBtn"
             variant="contained"
-            onClick={() => handleBtns()}
+            onClick={() => handleAddBtn()}
             value={state.addBtn}
             disableElevation={add}
             className={classes.addBtn}
@@ -100,14 +98,14 @@ const PaintControls = (props) => {
           <Button
             id="subtractBtn"
             variant="contained"
-            onClick={() => handleBtns()}
+            onClick={() => handleSubtractBtn()}
             value={state.subtractBtn}
             disableElevation={subtract}
             className={classes.subBtn}
           >
            Subtract 
           </Button>
-          <Typography id="continuous-slider" gutterBottom>
+          <Typography id="continuous-slider" >
             Size:
           </Typography>
           <Slider
@@ -115,7 +113,6 @@ const PaintControls = (props) => {
             onChange={handleBrush}
             className={classes.slider}
           />
-        </Container>
       </Paper>
     </div>
    );

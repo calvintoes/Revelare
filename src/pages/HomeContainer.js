@@ -31,6 +31,12 @@ function reducer(state, action) {
         ...initialState,
         subtractBtn: action.data
       }
+    case 'SLIDER_CHANGED':
+      console.log("SLIDER");
+      return {
+        ...initialState,
+        brushSize: action.data
+      }
     default:
       return initialState
   }
@@ -39,11 +45,12 @@ function reducer(state, action) {
 const HomeContainer = (props) => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
+  console.log('state:', state)
 
   return ( 
     <>
     <NavBar />
-    <Grid container className="main-wrapper">
+    <Grid container className="home-wrapper">
       <AppContext.Provider value={{ state, dispatch }}>
         <Grid className="controls">
           <div className="paint-wrapper">
@@ -54,7 +61,7 @@ const HomeContainer = (props) => {
           </div>
         </Grid>
         <Grid item>
-          <PaintCanvas />
+          <PaintCanvas brushSettings={state} />
         </Grid>
       </AppContext.Provider>
     </Grid>

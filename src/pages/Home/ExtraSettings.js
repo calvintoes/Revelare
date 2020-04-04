@@ -10,20 +10,26 @@ const ExtraSettings = () => {
 
   const useStyles = makeStyles(theme => ({
     root: {
-      maxWidth: '200px',
-      // textAlign: 'center's
+      maxWidth: '150px',
+      textAlign: 'center'
     },
     card: {
-      padding: '35px 10px',
+      padding: '30px 5px',
     },
     shuffleBtn: {
-      margin: '10px 0'
+      margin: '10px 0',
+      color: 'white',
+      backgroundColor: '#5D5D5F'
     },
     saveBtn: {
-      margin: '10px 0'
+      margin: '10px 0',
+      padding: '5px 30px',
+      backgroundColor: '#5C6C59',
+      color: 'white'
     },
     galleryBtn: {
-      margin: '10px 0'
+      margin: '10px 0',
+      color: '#5D5D5F',
     },
     
     
@@ -52,7 +58,7 @@ const ExtraSettings = () => {
           </Button>
           <Button
             id="galleryBtn"
-            variant="contained"
+            variant="outlined"
             disableElevation
             className={classes.galleryBtn}
           >

@@ -1,12 +1,11 @@
 .controls {
-  margin: 50px;
-  margin-left: 0;
+  margin: 50px 50px 0 ;
 }
 
 .settings-wrapper{
   margin-top: 50px ;
 }
 
-.main-wrapper {
-  margin: 0 100px;
+.home-wrapper {
+  padding: 0 25px;
 }
