@@ -2,21 +2,21 @@ import React, { useRef, useEffect} from 'react';
 import './PaintCanvas.css'
 import topImgSrc from '../../assets/suburbia.jpg'
 
-const PaintCanvas = ({brushSettings}) => {
-
+const PaintCanvas = React.memo( ({brushSettings}) => {
+  console.log(brushSettings)
   // Canvas Variables
   const {addBtn, subtractBtn, brushSize} = brushSettings;
-  const brushRadius = (brushSize/100) * 5;
+  let brushRadius = (brushSize/100) * 5;
    
   const mCanvas = useRef(null);
   let img = new Image();
 
+  if (brushRadius < 15) brushRadius = 15;
   useEffect(() => {
     //load overlay image
     let ctx = mCanvas.current.getContext('2d');
-    img.onload = function() {
-      ctx.drawImage(img, 0, 0, mCanvas.current.width, mCanvas.current.height);
-    }
+    img.onload = () => ctx.drawImage(img, 0, 0, mCanvas.current.width, mCanvas.current.height);
+  
     img.src = topImgSrc;
 
     // Drawing methods
@@ -49,7 +49,7 @@ const PaintCanvas = ({brushSettings}) => {
 
     mCanvas.current.addEventListener('touchmove', (e) => {
       e.preventDefault();
-      console.log("Touches detected");
+      // console.log("Touches detected");
       let touches = e.targetTouches[0];
       if (touches){
         let brushPos = getBrushPosition(touches.pageX, touches.pageY);
@@ -79,6 +79,6 @@ const PaintCanvas = ({brushSettings}) => {
       />
     </div>
    );
-}
+})
  
 export default PaintCanvas;

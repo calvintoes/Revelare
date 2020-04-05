@@ -14,7 +14,8 @@ export const AppContext = React.createContext();
 const initialState = {
   addBtn: true,
   subtractBtn: false,
-  brushSize: 5,
+  brushSize: 10,
+  resetBtn: false
 };
 
 function reducer(state, action) {
@@ -37,6 +38,11 @@ function reducer(state, action) {
         ...initialState,
         brushSize: action.data
       }
+    case 'RESET_BTN_PRESSED':
+      return{
+        ...initialState,
+        resetBtn: action.data
+      }
     default:
       return initialState
   }
@@ -45,13 +51,13 @@ function reducer(state, action) {
 const HomeContainer = (props) => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  console.log('state:', state)
+  console.log('state:', state);
 
   return ( 
     <>
+    <AppContext.Provider value={{ state, dispatch }}>
     <NavBar />
     <Grid container className="home-wrapper">
-      <AppContext.Provider value={{ state, dispatch }}>
         <Grid className="controls">
           <div className="paint-wrapper">
             <PaintControls />
@@ -63,8 +69,8 @@ const HomeContainer = (props) => {
         <Grid item>
           <PaintCanvas brushSettings={state} />
         </Grid>
-      </AppContext.Provider>
     </Grid>
+    </AppContext.Provider>
     </>
    );
 }

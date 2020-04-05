@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Button,
   Typography,
-  Grid
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { AppContext } from '../HomeContainer'
+
 
 const NavBar = (props) => {
 
   const [resetBtn, setResetBtn] = useState(false);
+  const {state, dispatch} = useContext(AppContext);
 
 
   const handleReset = () => {
     setResetBtn(true);
     console.log("Reset Btn Pressed")
+    dispatch({ type: 'RESET_BTN_PRESSED', data: resetBtn });
   }
 
   const useStyles = makeStyles(theme => ({
@@ -49,6 +52,7 @@ const NavBar = (props) => {
         variant="outlined"  
         className={classes.resetBtn}
         onClick={handleReset}
+        value={state.resetBtn}
       >
         Reset
       </Button>

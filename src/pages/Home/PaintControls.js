@@ -12,7 +12,7 @@ const PaintControls = (props) => {
 
   const [add, setAddBtn] = useState(true);
   const [subtract, setSubtractBtn] = useState(false); 
-  const [size, setBrushSize] = useState(5);
+  const [size, setBrushSize] = useState(10);
   const {state, dispatch} = useContext(AppContext);
 
   const useStyles = makeStyles(theme => ({
@@ -72,6 +72,7 @@ const PaintControls = (props) => {
 
   const handleBrush = (e, newValue) => {
     setBrushSize(newValue);
+    dispatch({type: 'SLIDER_CHANGED', data: newValue})
   }
         
   const classes = useStyles();
@@ -112,6 +113,7 @@ const PaintControls = (props) => {
             value={size}
             onChange={handleBrush}
             className={classes.slider}
+            step={10}
           />
       </Paper>
     </div>
