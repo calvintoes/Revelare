@@ -4,6 +4,7 @@ import NavBar from './Home/NavBar';
 import ExtraSettings from './Home/ExtraSettings'
 import PaintCanvas from './Home/PaintCanvas'
 import './HomeContainer.css'
+import TestCanvas from './Home/TestCanvas'
 
 import {
   Grid,
@@ -67,7 +68,8 @@ const HomeContainer = (props) => {
           </div>
         </Grid>
         <Grid item>
-          <PaintCanvas brushSettings={state} />
+          {/* <PaintCanvas brushSettings={state} /> */}
+          <TestCanvas brushSettings={state} />
         </Grid>
     </Grid>
     </AppContext.Provider>
