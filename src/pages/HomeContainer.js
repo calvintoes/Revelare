@@ -4,44 +4,43 @@ import NavBar from './Home/NavBar';
 import ExtraSettings from './Home/ExtraSettings'
 import PaintCanvas from './Home/PaintCanvas'
 import './HomeContainer.css'
-import TestCanvas from './Home/TestCanvas'
-
 import {
   Grid,
 } from '@material-ui/core'
-
-export const AppContext = React.createContext();
+import { AppContext } from './AppContext'
 
 const initialState = {
   addBtn: true,
   subtractBtn: false,
-  brushSize: 10,
+  brushSize: 15,
   resetBtn: false
 };
 
 function reducer(state, action) {
   switch(action.type){
     case 'ADD_BTN_PRESSED':
+    case 'ADD_BTN_FLIP':
       console.log("ADD REDUER")
       return {
-        ...initialState,
+        ...state,
         addBtn: action.data
       }
     case 'SUBTRACT_BTN_PRESSED':
+    case 'SUBTRACT_BTN_FLIP':
       console.log("SUBTRACT REDUCER")
       return {
-        ...initialState,
+        ...state,
         subtractBtn: action.data
       }
     case 'SLIDER_CHANGED':
       console.log("SLIDER");
       return {
-        ...initialState,
+        ...state,
         brushSize: action.data
       }
     case 'RESET_BTN_PRESSED':
       return{
-        ...initialState,
+        ...state,
         resetBtn: action.data
       }
     default:
@@ -52,7 +51,7 @@ function reducer(state, action) {
 const HomeContainer = (props) => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  console.log('state:', state);
+  console.log('Container state:', state);
 
   return ( 
     <>
@@ -63,13 +62,12 @@ const HomeContainer = (props) => {
           <div className="paint-wrapper">
             <PaintControls />
           </div>
-          <div className="settings-wrapper">
+          {/* <div className="settings-wrapper">
             <ExtraSettings />
-          </div>
+          </div> */}
         </Grid>
         <Grid item>
-          {/* <PaintCanvas brushSettings={state} /> */}
-          <TestCanvas brushSettings={state} />
+          <PaintCanvas />
         </Grid>
     </Grid>
     </AppContext.Provider>

@@ -6,13 +6,12 @@ import {
   Typography
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { AppContext } from '../HomeContainer'
+import { AppContext } from '../AppContext'
 
 const PaintControls = (props) => {
 
   const [add, setAddBtn] = useState(true);
   const [subtract, setSubtractBtn] = useState(false); 
-  const [size, setBrushSize] = useState(10);
   const {state, dispatch} = useContext(AppContext);
 
   const useStyles = makeStyles(theme => ({
@@ -50,28 +49,21 @@ const PaintControls = (props) => {
   }));
   
   const handleAddBtn = (e) => {
-    if (!add) {
-      setAddBtn(true);
-      setSubtractBtn(false);
-    }
     setAddBtn(true);
     setSubtractBtn(false);
-    dispatch({ type: 'ADD_BTN_PRESSED', data: add });
+    dispatch({ type: 'ADD_BTN_PRESSED', data: true });
+    dispatch({ type: 'SUBTRACT_BTN_FLIP', data: false });
   }
 
   const handleSubtractBtn = (e) => {
-    if (!subtract) {
-      setAddBtn(false);
-      setSubtractBtn(true);
-    }
     setAddBtn(false);
     setSubtractBtn(true);
-    dispatch({ type: 'SUBTRACT_BTN_PRESSED', data: subtract })
+    dispatch({ type: 'SUBTRACT_BTN_PRESSED', data: true })
+    dispatch({ type: 'ADD_BTN_FLIP', data: false });
   }
 
 
   const handleBrush = (e, newValue) => {
-    setBrushSize(newValue);
     dispatch({type: 'SLIDER_CHANGED', data: newValue})
   }
         
@@ -89,8 +81,7 @@ const PaintControls = (props) => {
           <Button
             id="addBtn"
             variant="contained"
-            onClick={() => handleAddBtn()}
-            value={state.addBtn}
+            onClick={handleAddBtn}
             disableElevation={add}
             className={classes.addBtn}
           >
@@ -99,8 +90,7 @@ const PaintControls = (props) => {
           <Button
             id="subtractBtn"
             variant="contained"
-            onClick={() => handleSubtractBtn()}
-            value={state.subtractBtn}
+            onClick={handleSubtractBtn}
             disableElevation={subtract}
             className={classes.subBtn}
           >
@@ -110,7 +100,6 @@ const PaintControls = (props) => {
             Size:
           </Typography>
           <Slider
-            value={size}
             onChange={handleBrush}
             className={classes.slider}
             step={10}
