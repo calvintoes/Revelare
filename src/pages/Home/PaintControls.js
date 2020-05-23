@@ -11,7 +11,7 @@ import { AppContext } from '../AppContext'
 const PaintControls = (props) => {
 
   const [add, setAddBtn] = useState(true);
-  const [subtract, setSubtractBtn] = useState(false); 
+  const [undo, setUndoBtn] = useState(false); 
   const {state, dispatch} = useContext(AppContext);
 
   const useStyles = makeStyles(theme => ({
@@ -29,10 +29,11 @@ const PaintControls = (props) => {
       backgroundColor: add ? '#5D5D5F' : 'null',
       color: add ? 'white' : 'null'
     },
-    subBtn: {
+    undoBtn: {
       margin: '12px 0',
       maxWidth: '100px',
-      backgroundColor: subtract ? '#5D5D5F' : 'null',
+      padding: '6px 30px',
+      backgroundColor: undo ? '#5D5D5F' : 'null',
     },
     slider: {
       margin: '10px 0',
@@ -50,18 +51,17 @@ const PaintControls = (props) => {
   
   const handleAddBtn = (e) => {
     setAddBtn(true);
-    setSubtractBtn(false);
+    setUndoBtn(false);
     dispatch({ type: 'ADD_BTN_PRESSED', data: true });
-    dispatch({ type: 'SUBTRACT_BTN_FLIP', data: false });
+    dispatch({ type: 'UNDO_BTN_FLIP', data: false });
   }
 
-  const handleSubtractBtn = (e) => {
+  const handleUndoBtn = (e) => {
     setAddBtn(false);
-    setSubtractBtn(true);
-    dispatch({ type: 'SUBTRACT_BTN_PRESSED', data: true })
+    setUndoBtn(true);
+    dispatch({ type: 'UNDO_BTN_PRESSED', data: true })
     dispatch({ type: 'ADD_BTN_FLIP', data: false });
   }
-
 
   const handleBrush = (e, newValue) => {
     dispatch({type: 'SLIDER_CHANGED', data: newValue})
@@ -87,15 +87,16 @@ const PaintControls = (props) => {
           >
            Add 
           </Button>
-          <Button
-            id="subtractBtn"
+          {/* <Button
+            id="undoBtn"
             variant="contained"
-            onClick={handleSubtractBtn}
-            disableElevation={subtract}
-            className={classes.subBtn}
+            onClick={handleUndoBtn}
+            disableElevation={undo}
+            className={classes.undoBtn}
+            
           >
-           Subtract 
-          </Button>
+           Undo 
+          </Button> */}
           <Typography id="continuous-slider" >
             Size:
           </Typography>

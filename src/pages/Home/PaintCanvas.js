@@ -4,12 +4,21 @@ import topImgSrc from '../../assets/suburbia.jpg'
 import PureCanvas from './PureCanvas'
 import { AppContext } from '../AppContext'
 
+
+/**
+ * History is an array of DataURL
+ * [ [ {x,y},{x,y},{x,y} ...] ...]
+ */
+let history = [];
+let historyStep = -1;
+
 class PaintCanvas extends Component {
   static contextType = AppContext;
   constructor(props){
     super(props)
     this.canvas = null;
     this.ctx = null;
+    this.drawing = false;
   }  
   
   componentDidMount(){
@@ -29,6 +38,7 @@ class PaintCanvas extends Component {
 
   // Overlays top image on canvas
   initTopLayer = () => {
+    console.log('loaded top layer')
     const img = new Image();
     img.onload = () => this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
     img.src = topImgSrc;
@@ -55,57 +65,111 @@ class PaintCanvas extends Component {
       console.log("draw dot", myContext.brushSize)
       this.ctx.beginPath();
       this.ctx.arc(mouseX, mouseY, myContext.brushSize, 0, 2*Math.PI, true);
-
-      const img = (
-        <img 
-          src={topImgSrc} 
-          alt="top layer"
-          style={{
-            backgroundSize: 'cover'
-        }}/>
-      )
-      
-      if (myContext.addBtn) {
-        this.ctx.globalCompositeOperation = 'destination-out';
-        this.ctx.fillStyle = '#000';
-      } else {
-        this.ctx.globalCompositeOperation = 'source-over'
-        // this.ctx.fillStyle = this.ctx.createPattern(img, 'no-repeat')
-      }
-      
+      this.ctx.globalCompositeOperation = 'destination-out';
+      this.ctx.fillStyle = '#000';
       this.ctx.fill();
-     
     }
 
+    /**
+     * Returns false if button is found
+     * @param {} event 
+     */
     const detectLeftButton= (event) => {
       if ('buttons' in event) {
-          return event.buttons === 0;
+          return event.buttons === 1;
       } else if ('which' in event) {
-          return event.which === 0;
+          return event.which === 1;
       } else {
-          return event.button === 0;
+          return event.button === 1;
       }
     }
 
+    /**
+     * EVENT LISTENERS
+     */
+
+    //document.getElementById('undoBtn').addEventListener('click', this.handleUndo);
+    document.getElementById('resetBtn').addEventListener('click', this.handleReset);
+
+    /**
+     * MOBILE EVENTS
+     */
+
     this.canvas.addEventListener('touchmove', (e) => {
+      let myContext = this.context.state;
       e.preventDefault();
       // console.log("Touches detected");
-      let touches = e.targetTouches[0];
-      if (touches){
-        let brushPos = getBrushPosition(touches.pageX, touches.pageY);
-        drawDot(brushPos.x, brushPos.y);
+      if ( myContext.addBtn ) {
+        let touches = e.targetTouches[0];
+        if (touches){
+          let brushPos = getBrushPosition(touches.pageX, touches.pageY);
+          drawDot(brushPos.x, brushPos.y);
+        }
       }
-    }, false);
+    }, {passive: false});
+
+    // this.canvas.addEventListener('touchend', () => {
+    //   let myContext = this.context.state;
   
+    //   if ( myContext.addBtn ) {
+    //     historyStep += 1;
+    //     history = [...history, this.canvas.toDataURL()]
+    //     console.log(history)
+    //   }
+    // }, {passive: false})
+
+    /**
+     * DESKTOP EVENTS
+     */
     this.canvas.addEventListener('mousemove', (e) => {
-      console.log("mouse move");
-      let brushPosition = getBrushPosition(e.clientX, e.clientY);
-      let leftButton = detectLeftButton(e);
-      if (leftButton === 0){
-        drawDot(brushPosition.x, brushPosition.y);
+      let myContext = this.context.state;
+      if ( myContext.addBtn ){
+        let brushPosition = getBrushPosition(e.clientX, e.clientY);
+        let leftButton = detectLeftButton(e);
+        if ( leftButton ){
+          drawDot(brushPosition.x, brushPosition.y);
+        }
       }
     }, false);
+
+    this.canvas.addEventListener('mouseup', (e) => {
+      let myContext = this.context.state;
+      console.log('mouseup')
+      if ( myContext.addBtn ) {
+        historyStep += 1;
+        if (historyStep < history.length) history.length = historyStep
+        this.ctx.globalCompositeOperation = "source-over"
+        history = [...history, this.canvas.toDataURL()]
+        console.log(history)
+      }
+    })
   }
+
+  // handleUndo = () => {
+  //   if ( historyStep === 0 ) return;
+
+  //   let prevImageState = new Image();
+  //   prevImageState.src = history[history.length - 1]
+  //   this.ctx.globalCompositeOperation = 'source-over'
+  //   prevImageState.onload = () => {
+  //     console.log('drawing')
+  //     this.ctx.drawImage(prevImageState, 0, 0, this.canvas.width, this.canvas.height);
+  //   }
+  //   console.log("load prev state", history)
+    
+  // }
+
+  handleReset = () => {
+   console.log('inside reset')
+   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); 
+   const resetImage = new Image();
+   console.log(this.ctx)
+   this.ctx.globalCompositeOperation = 'source-over'
+   resetImage.onload = () => this.ctx.drawImage(resetImage, 0, 0, this.canvas.width, this.canvas.height);
+   resetImage.src = topImgSrc;
+  }
+
+  
 
   render() { 
     // console.log('Paint state',this.state)
