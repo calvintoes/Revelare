@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './PaintCanvas.css'
-import topImgSrc from '../../assets/suburbia.jpg'
+import { TOP_LAYER } from './ImageLocations'
 import PureCanvas from './PureCanvas'
 import { AppContext } from '../AppContext'
 
@@ -41,7 +41,7 @@ class PaintCanvas extends Component {
     console.log('loaded top layer')
     const img = new Image();
     img.onload = () => this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
-    img.src = topImgSrc;
+    img.src = TOP_LAYER
   }
   
   initDraw = () => {
@@ -162,11 +162,8 @@ class PaintCanvas extends Component {
   handleReset = () => {
    console.log('inside reset')
    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); 
-   const resetImage = new Image();
-   console.log(this.ctx)
    this.ctx.globalCompositeOperation = 'source-over'
-   resetImage.onload = () => this.ctx.drawImage(resetImage, 0, 0, this.canvas.width, this.canvas.height);
-   resetImage.src = topImgSrc;
+   this.initTopLayer();
   }
 
   
